@@ -1,6 +1,43 @@
+// gradle-ssh-plugin start
+
+buildscript {
+	dependencies {
+		classpath 'org.hidetake:gradle-ssh-plugin:2.10.1'
+	}
+}
+
+ssh.settings {
+	dryRun = project.hasProperty('dryRun')
+}
+
+remotes {
+	web01 {
+		role 'masterNode'
+		host = '192.168.0.1'
+		user = 'jenkins'
+	}
+	web02 {
+		host = '192.168.1.1'			// vmware ip
+		user = 'jenkins'
+	}
+}
+
+task reload {
+	doLast {
+		ssh.run {
+			session(remotes.role('webServers')) {
+				execute 'sudo service tomcat restart'
+			}
+		}
+	}
+}
+
+// gradle-ssh-plugin end
+
 plugins {
 	id 'org.springframework.boot' version '2.5.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.hidetake.ssh' version '2.10.1'
 	id 'java'
 }
 
@@ -12,6 +49,8 @@ repositories {
 	mavenCentral()
 }
 
+apply plugin: 'org.hidetake.ssh'
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -20,3 +59,4 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
