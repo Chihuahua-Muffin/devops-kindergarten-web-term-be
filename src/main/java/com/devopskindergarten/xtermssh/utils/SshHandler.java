@@ -42,11 +42,11 @@ public class SshHandler implements WebSocketHandler {
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
+        // 소켓 종료
         conService.close(session);
     }
 

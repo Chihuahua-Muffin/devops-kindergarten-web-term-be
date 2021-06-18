@@ -33,8 +33,11 @@ public class SshConnectionService {
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
     public void initConnection(WebSocketSession session, SshDto dto) {
+        // 초기 설정. jsch 클래스를 생성해서 객체를 connectionDto에 넣고,
+        // 웹소켓도 넣은 자료구조로 만들어 connectToSSH로 보냄.
         JSch jsch = new JSch();
         SshConnectionDto connectionDto = new SshConnectionDto();
+        // 생성한 객체에 데이터들을 넣어주는 단계.
         connectionDto.setJsch(jsch);
         connectionDto.setSession(session);
         connectionDto.setInfo(dto);
@@ -83,17 +86,23 @@ public class SshConnectionService {
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
 
+        // init에서 받아온 connectionDto(데이터 뭉치)에서 jsch 객체를 꺼내,
+        // 그 때 세션에 들어 있던 접속 아이디, 주소, 포트를 현재 세션에 연결시킴.
         session = connectionDto.getJsch().getSession(dto.getUsername(), dto.getHost(), dto.getPort());
         session.setConfig(config);
 
+        // 연결하려는 곳의 비밀번호를 입력.
         session.setPassword(dto.getPassword());
         session.connect(60000);
 
+        // shell을 매개변수로 해서 채널을 오픈해 생성.
         Channel channel = session.openChannel("shell");
 
+        // 채널 연결
         channel.connect(3000);
         connectionDto.setChannel(channel);
 
+        // ssh 연결 후 값을 입력
         InputStream is = channel.getInputStream();
         try {
             byte[] buffer = new byte[1024];

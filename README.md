@@ -9,6 +9,7 @@
 
 ---
 ### 참고 자료
-<a>https://velog.io/@hanblueblue/%EB%B2%88%EC%97%AD-Spring-4-Spring-WebSocket</a>
-<a>https://mebadong.tistory.com/40</a>
-<a>https://supawer0728.github.io/2018/03/30/spring-websocket/</a>
+<a>https://velog.io/@hanblueblue/%EB%B2%88%EC%97%AD-Spring-4-Spring-WebSocket
+<a>https://mebadong.tistory.com/40
+<a>https://supawer0728.github.io/2018/03/30/spring-websocket/
+<a>https://lts0606.tistory.com/6
